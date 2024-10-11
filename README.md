@@ -86,7 +86,7 @@ max_requests_jitter = 100
 ...
 gunicorn -c app/gunicorn.config.py
 
-gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8004 --workers 4
+gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8010 --workers 4
 
 ..
 uvicorn app.main:app --reload for dev
