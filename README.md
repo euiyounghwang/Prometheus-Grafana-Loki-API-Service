@@ -52,6 +52,7 @@ pip install pytz
 
 
 ### Using Poetry: Create the virtual environment in the same directory as the project and install the dependencies:
+- Gunicorn/FastAPI : https://chaechae.life/blog/fastapi-deployment-gunicorn#google_vignette
 ```bash
 python -m venv .venv
 source .venv/bin/activate
