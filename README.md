@@ -167,7 +167,8 @@ limits_config:
 ```
 - Pushing Logs to Loki Without Using Promtail (https://medium.com/geekculture/pushing-logs-to-loki-without-using-promtail-fc31dfdde3c6, https://github.com/sleleko/devops-kb/blob/master/python/push-to-loki.py)
 - Pushing Logs to Loki with "python-logging-loki"
-- Grafana Dashboard : {service=~"prometheus-monitoring-service|prometheus-monitoring-service1"}
+- Push logs to Grafana-loki(`https://github.com/euiyounghwang/Prometheus-monitoring-exporter/blob/master/Grafana-log/push_to_loki.sh`) via REST API (https://github.com/euiyounghwang/Prometheus-Grafana-Loki-API-Service)
+- Grafana Dashboard : `sum(count_over_time({service=~"prometheus-alert-service|prometheus-grafana-loki-logging-service"}[$__interval]))`, `{service=~"prometheus-grafana-loki-logging-service", env=~"$Kafka_Data_Source_Env"}`
 ```bash
 pip install python-logging-loki
 
