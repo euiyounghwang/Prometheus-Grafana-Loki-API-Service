@@ -34,7 +34,14 @@ class ESLogPushHandler(object):
         try:
             self.logger.info(f"client_ip : {client_ip}, request_json : {request_json}")
             message = request_json.get("message")
-            Logging_Header = "Prometheus-Logging-Service - [{}] Spark Node [{}] {} - Spark Custom App ['{}'] Log : {}".format(request_json.get("env"), request_json.get("host"), request_json.get("log_status"), request_json.get("log_filename"), message)
+            Logging_Header = "Prometheus-Logging-Service - [{}] Spark Node [{}, {}] {} - Spark Custom App ['{}'] Log : {}".format(
+                                    request_json.get("env"), 
+                                    request_json.get("host"), 
+                                    request_json.get("host_name"), 
+                                    request_json.get("log_status"), 
+                                    request_json.get("log_filename"), 
+                                    message
+            )
             if request_json.get("log_status").upper() == "INFO":
                 self.loki_logger.info(Logging_Header,
                                         extra={"tags": {"service": "prometheus-grafana-loki-logging-service", "message" : "[{}] Services, Alert : {}".format(
