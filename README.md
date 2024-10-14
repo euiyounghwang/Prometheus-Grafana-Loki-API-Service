@@ -61,12 +61,14 @@ pip install poetry
 # --
 poetry config virtualenvs.in-project true
 poetry init
-poetry add prometheus-client
-poetry add psutil
+poetry add fastapi
+poetry add requests
 poetry add pytz
-poetry add JPype1
-poetry add psycopg2-binary
-poetry add jaydebeapi
+poetry add httpx
+poetry add httpx
+poetry add uvicorn
+poetry add python-dotenv
+poetry add python-logging-loki
 
 ...
 
@@ -254,3 +256,8 @@ sudo systemctl stop grafana_loki_interface_api.service
 
 sudo service grafana_loki_interface_api status/stop/start
 ```
+
+
+### Grafana Dashboard
+- Grafana-Loki Dashboard: https://github.com/euiyounghwang/Prometheus-monitoring-exporter/blob/master/Grafana_Dashboard/loki-log-dashboard.json
+- Kafka/Zookeeper Service : {job=~"zookeeper_logs", env=~"$Kafka_Data_Source_Env"}

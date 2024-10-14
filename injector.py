@@ -3,9 +3,7 @@ from dotenv import load_dotenv
 # import yaml
 import json
 import os
-# from service.es_config_handler import ESConfigHandler
-# from service.es_download_handler import JobHandler
-# from service.es_log_handler import ESLogConfigHandler
+from service.es_log_handler import ESLogPushHandler
 
 load_dotenv()
     
@@ -21,6 +19,4 @@ logger.info(list(hosts))
 # es_hosts_enum_list =list(hosts.keys())
 """
 
-# ESConfigHandlerInject = ESConfigHandler(logger)
-# JobHandlerInject = JobHandler(logger)
-# ESLogHandlerInject = ESLogConfigHandler(logger)
+ESLogPushHandlerInject = ESLogPushHandler(logger)

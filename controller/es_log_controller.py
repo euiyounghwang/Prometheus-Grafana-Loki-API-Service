@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 import json
 import datetime
-from injector import logger
+from injector import logger, ESLogPushHandlerInject
 from service.status_handler import (StatusHanlder, StatusException)
 # from typing import Optional
 import datetime
@@ -41,20 +41,24 @@ async def get_alert_log(request: Request):
           },
           description="Sample Payload : POST http://localhost:8010/log/push_to_loki", 
           summary="Create_log")
-async def set_monitoring_log(request_ip:  Request, request_log: Log):
+async def set_push_loki_log(request_ip:  Request, request_log: Log):
     ''' 
     test curl
-    curl -X 'POST'   'http://localhost:8004/log/set_log' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{
+    curl -X 'POST'   'http://localhost:8010/log/push_to_loki' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{
+      "log_status": "error",
       "env": "dev",
-      "alert": "false"
+      "host": "localhost#1",
+      "host_name": "Data_Node_#1",
+      "log_filename": "test.log",
+      "message": "PROCESS proc"
     }'
 
     '''
-    logger.info("request.client.host - : {}".format(request_ip.client.host))
     request_json = request_log.to_json()
-    # response =  await ESLogHandlerInject.set_service_monitoring_log(request_ip.client.host, request_json)
-    # if isinstance(response, dict):
-    #     logger.info('set_log [response] - {}'.format(response))
+    logger.info("request.client.host - : {}, request.json() - {}".format(request_ip.client.host, request_json))
+    response =  await ESLogPushHandlerInject.pusho_loki_log(request_ip.client.host, request_json)
+    if isinstance(response, dict):
+        logger.info('set_push_loki_log [response] - {}'.format(response))
 
-    return {}
+    return response
 
