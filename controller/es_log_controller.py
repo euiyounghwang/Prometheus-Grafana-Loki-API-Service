@@ -56,7 +56,10 @@ async def set_push_loki_log(request_ip:  Request, request_log: Log):
     '''
     request_json = request_log.to_json()
     logger.info("request.client.host - : {}, request.json() - {}".format(request_ip.client.host, request_json))
-    response =  await ESLogPushHandlerInject.pusho_loki_log(request_ip.client.host, request_json)
+    ''' public loki host'''
+    # response =  await ESLogPushHandlerInject.pusho_loki_log(request_ip.client.host, request_json)
+    ''' secure loki host'''
+    response =  await ESLogPushHandlerInject.pusho_alert_loki_log(request_ip.client.host, request_json)
     if isinstance(response, dict):
         logger.info('set_push_loki_log [response] - {}'.format(response))
 
