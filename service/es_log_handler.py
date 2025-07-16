@@ -78,7 +78,7 @@ class ESLogPushHandler(object):
         try:
             self.logger.info(f"client_ip : {client_ip}, request_json : {request_json}, LOKI_HOST : {os.getenv('LOKI_HOST')}")
 
-            Logging_Header = "Prometheus-Logging-Service - [{}] Spark Node [{}, {}] {} - Spark Custom App ['{}'] Log : {}".format(
+            Logging_Header = "Prometheus-Logging-Service - [{}] Node [{}, {}] {} - Log File Name ['{}'], Message : {}".format(
                                     request_json.get("env"), 
                                     request_json.get("host"), 
                                     request_json.get("host_name"), 
