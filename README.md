@@ -115,12 +115,19 @@ unzip loki-linux-amd64.zip
 ./loki-linux-amd64 --config.file=./loki-config.yml
 nohup ./loki-linux-amd64 -config.file=./loki-config.yaml 2>&1 &
 
+# ''' https://community.grafana.com/t/how-to-set-up-loki-and-promtail-to-communicate-over-tls/107867 '''
+# - openssl req -x509 -newkey rsa:4096 -nodes -keyout private.key -out certificate.crt 
+# - openssl x509 -in ./certificate.crt -subject -noout
+
 # --
 auth_enabled: false
 
 server:
   http_listen_port: 3100
   grpc_listen_port: 9096
+  tls_server_config:
+    cert_file: /certs/certificate.crt
+    key_file: /certs/private.key
 
 common:
   instance_addr: 0.0.0.0
@@ -199,6 +206,50 @@ logger.warning(
    extra={"tags": {"service": "my-service"}},
 )
 # extra={"tags": {"service": "my-service", "one": "more thing"}}
+
+
+using requests
+
+def push_log_to_grafana_loki(env, title_msg, body_msg, logger_level):
+    ''' push msg log into grafana-loki '''
+
+    def loki_timestamp():
+      return f"{(int(time.time() * 1_000_000_000))}"
+
+    try:
+        url = 'https://{}:3100/loki/api/v1/push'.format(os.getenv('LOKI_HOST'))
+        headers = {
+            'Content-type': 'application/json'
+        }
+        ''' 'service': 'prometheus-monitoring-service','message': '[DEV] Services, Alert : True, Issues : Server Active : Green, ES Data Pipline : Red','env': 'Dev' '''
+        payload = {
+            'streams': [
+                {
+                    'stream' : {
+                        'service': 'prometheus-golang-monitoring-service',
+                        "message": body_msg,
+                        "env": env,
+                        "logger" : "prometheus-logger",
+                        "level" : logger_level
+                    },
+                    'values': [
+                        [
+                            loki_timestamp(),
+                            title_msg
+                        ]
+                    ]
+                }
+            ]
+        }
+        # payload = json.dumps(payload)
+        ''' There should be an option to disable certificate verification during SSL connection. It will simplify developing and debugging process. '''
+        response = requests.post(url, json=payload, headers=headers, verify=False)
+        print(response.status_code)
+
+    except Exception as e:
+        logging.error(e)
+        pass
+
 ```
 
 - Grafana Promtail Setup
