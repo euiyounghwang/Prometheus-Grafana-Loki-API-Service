@@ -96,7 +96,7 @@ class ESLogPushHandler(object):
                 'streams': [
                     {
                         'stream' : {
-                            'service': 'prometheus-monitoring-service',
+                            'service': request_json.get("service"),
                             "message": request_json.get("message"),
                             "env": request_json.get("env"),
                             "logger" : "prometheus-logger",

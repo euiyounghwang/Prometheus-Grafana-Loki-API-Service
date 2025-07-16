@@ -14,6 +14,7 @@ class Sort_Order(str, Enum):
 
 
 class Log(BaseModel):
+    service: str = 'prometheus-golang-monitoring-service'
     log_status: str= "error"
     env: str = "dev"
     host: str = "localhost#1"
@@ -23,6 +24,7 @@ class Log(BaseModel):
         
     def to_json(self):
         return {
+            'service': str(self.service),
             'log_status' : str(self.log_status).upper(),
             'env' : str(self.env).upper(),
             'host' : str(self.host),
